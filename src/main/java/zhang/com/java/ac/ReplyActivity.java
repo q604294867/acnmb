@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.biao.pulltorefresh.OnRefreshListener;
 import com.biao.pulltorefresh.PtrLayout;
@@ -38,11 +39,13 @@ public class ReplyActivity extends SwipeBackActivity {
     private View emptyView =null;
     private ArrayList<ReplysInfo.OneReply> lists =new ArrayList<ReplysInfo.OneReply>();
     private String upName = null;
+    private ProgressBar pb;
 
     Handler handler =new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
+            pb.setVisibility(View.GONE);
             ReplysInfo replysInfo = (ReplysInfo) msg.obj;
             ptrLayout.onRefreshComplete();
             if (msg.what == 1) {
@@ -82,6 +85,8 @@ public class ReplyActivity extends SwipeBackActivity {
         activity =this;
         Intent intent = getIntent();
         final String id = intent.getStringExtra("id");
+
+        pb = (ProgressBar) findViewById(R.id.pb_reply);
 
         mSwipeBackLayout = getSwipeBackLayout();
         mSwipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT);

@@ -1,5 +1,6 @@
 package zhang.com.java.ac.adapter;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.text.Html;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.lidroid.xutils.BitmapUtils;
 
 import java.util.ArrayList;
 
+import zhang.com.java.ac.ImageActivity;
 import zhang.com.java.ac.R;
 import zhang.com.java.ac.ReplyActivity;
 import zhang.com.java.ac.chuan.ReplysInfo;
@@ -24,6 +26,7 @@ public class ReplysListAdapter extends BaseAdapter {
     private ArrayList<ReplysInfo.OneReply> list;
     private BitmapUtils utils ;
     private String upName;
+
     public ReplysListAdapter (ArrayList<ReplysInfo.OneReply> list,String upName) {
         this.list = list;
         this.upName =upName;
@@ -47,7 +50,6 @@ public class ReplysListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        System.out.println("position"+position);
         ViewHolder holder;
         if(convertView ==null) {
             convertView =View.inflate(ReplyActivity.activity, R.layout.item_replys,null);
@@ -62,7 +64,7 @@ public class ReplysListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        ReplysInfo.OneReply oneReply = list.get(position);
+        final ReplysInfo.OneReply oneReply = list.get(position);
 
         if (oneReply.userid.equals(upName)) {
             holder.tv_replys_name.setTextColor(Color.parseColor("#006000"));
@@ -84,9 +86,19 @@ public class ReplysListAdapter extends BaseAdapter {
         } else {
             holder.iv_replys.setImageResource(R.drawable.image_null);
         }
+        holder.iv_replys.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ReplyActivity.activity, ImageActivity.class);
+                intent.putExtra("url",oneReply.img+oneReply.ext);
+                ReplyActivity.activity.startActivity(intent);
+            }
+        });
+
 
         return convertView;
     }
+
     static  class ViewHolder {
         public TextView tv_replys_name;
         public TextView tv_replys_id;

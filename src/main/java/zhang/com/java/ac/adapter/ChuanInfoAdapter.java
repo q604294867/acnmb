@@ -64,7 +64,7 @@ public class ChuanInfoAdapter extends RecyclerView.Adapter<ChuanInfoViewHolder> 
         }
         if (!info.img.equals("")) {
             utils.configDefaultLoadingImage(R.drawable.image_loding);
-            utils.display(holder.iv_chuan_img,"http://cdn.ovear.info:8998/thumb/"+info.img+info.ext);
+            utils.display(holder.iv_chuan_img, "http://cdn.ovear.info:8998/thumb/" + info.img + info.ext);
         }else {
             holder.iv_chuan_img.setImageResource(R.drawable.image_null);
         }
