@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:title="回复"
+        android:id="@+id/action_reply"
+        android:icon="@drawable/ic_reply_dark_x24"
+        app:showAsAction="always"/>
+    <item
+        android:title="在浏览器中打开"
+        android:id="@+id/action_open_in_browser"
+        app:showAsAction="never"/>
+    <item
+        android:title="收藏"
+        android:id="@+id/action_collection"
+        app:showAsAction="never"/>
+
+</menu>

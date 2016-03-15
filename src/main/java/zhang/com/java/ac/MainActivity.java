@@ -1,5 +1,6 @@
 package zhang.com.java.ac;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -16,6 +17,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.biao.pulltorefresh.OnRefreshListener;
@@ -31,7 +34,7 @@ import com.lidroid.xutils.http.client.HttpRequest;
 import java.util.ArrayList;
 
 import zhang.com.java.ac.adapter.ChuanInfoAdapter;
-import zhang.com.java.ac.chuan.ChuanInfo;
+import zhang.com.java.ac.bean.ChuanInfo;
 
 
 public class MainActivity extends AppCompatActivity
@@ -42,23 +45,21 @@ public class MainActivity extends AppCompatActivity
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if(msg.what==WHAT_SHOW_CHUAN) {
-                mlist = (ArrayList<ChuanInfo.Res>) msg.obj;
-
-                chuanInfoAdapter =new ChuanInfoAdapter(mlist,getBaseContext());
-
-               chuanRecycler.setAdapter(chuanInfoAdapter);
-
-                ;
                 swipe.setRefreshing(false);
+
+                mlist = (ArrayList<ChuanInfo.Res>) msg.obj;
+                chuanInfoAdapter =new ChuanInfoAdapter(mlist,getBaseContext());
+                chuanRecycler.setAdapter(chuanInfoAdapter);
             }else if(msg.what==WHAT_LOAD_MORE) {
                 mlist.addAll((ArrayList<ChuanInfo.Res>) msg.obj);
-               chuanInfoAdapter.notifyDataSetChanged();
+                chuanInfoAdapter.notifyDataSetChanged();
 
                 ptrLayout.onRefreshComplete();
                 isLoadMore=false;
             }else if (msg.what==WHAT_FAILED){
                 if (mpage==1){
-
+                    swipe.setRefreshing(false);
+                    btReload.setVisibility(View.VISIBLE);
                 }else {
                     mpage--;
                     Toast.makeText(MainActivity.this, "加载失败", Toast.LENGTH_LONG).show();
@@ -80,14 +81,15 @@ public class MainActivity extends AppCompatActivity
     private ChuanInfoAdapter chuanInfoAdapter = null;
     private Toolbar toolbar = null;
     public static MainActivity mactivity;
+    private Button btReload ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mactivity =this ;
         toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("综合版");
         setSupportActionBar(toolbar);
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -97,6 +99,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        btReload= (Button) findViewById(R.id.bt_chuan_reload);
 
 
         swipe = (SwipeRefreshLayout) findViewById(R.id.swipe);
@@ -131,8 +135,7 @@ public class MainActivity extends AppCompatActivity
                 loadMoreChuan(currentID, mpage);
             }
         });
-
-        toolbar.setTitle("综合版");
+        
         showChuan(4, 1);
     }
 
@@ -161,10 +164,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.aciton_refresh) {
+            refreshChuan(currentID, 1);
+            mpage = 1;
+            swipe.setRefreshing(true);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -173,10 +178,10 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
+        if (id == R.id.nav_collcet) {
+            startActivity(new Intent(this,CollectActivity.class));
+        } else if (id == R.id.nav_rep_log) {
+            startActivity(new Intent(this,RepLogActivity.class));
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -186,10 +191,15 @@ public class MainActivity extends AppCompatActivity
             toolbar.setTitle("综合版");
 
         } else if (id==R.id.nav_jishu) {
-            showChuan(6, 1);
-            toolbar.setTitle("v家");
+            showChuan(30, 1);
+            toolbar.setTitle("技术讨论");
+        } else if (id==R.id.nav_huanle) {
+            showChuan(20,1);
+            toolbar.setTitle("欢乐恶搞");
+        } else if (id==R.id.nav_riji) {
+            showChuan(89,1);
+            toolbar.setTitle("日记");
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -224,8 +234,8 @@ public class MainActivity extends AppCompatActivity
 
             @Override
             public void onFailure(HttpException e, String s) {
-                Message message = null;
-                handler.obtainMessage(WHAT_FAILED);
+                Message message = handler.obtainMessage(WHAT_FAILED);
+                handler.sendMessage(message);
             }
         });
     }
@@ -243,10 +253,9 @@ public class MainActivity extends AppCompatActivity
         mpage++;
         refreshChuan(id, mpage);
     }
-
-
-
-
-
+    public void clickLoad(View v) {
+        showChuan(currentID, 1);
+        btReload.setVisibility(View.GONE);
+    }
 
 }

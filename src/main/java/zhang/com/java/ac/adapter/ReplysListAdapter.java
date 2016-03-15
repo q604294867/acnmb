@@ -2,7 +2,12 @@ package zhang.com.java.ac.adapter;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v7.app.AlertDialog;
 import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -12,11 +17,14 @@ import android.widget.TextView;
 import com.lidroid.xutils.BitmapUtils;
 
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import zhang.com.java.ac.ImageActivity;
 import zhang.com.java.ac.R;
 import zhang.com.java.ac.ReplyActivity;
-import zhang.com.java.ac.chuan.ReplysInfo;
+import zhang.com.java.ac.bean.ReplysInfo;
+import zhang.com.java.ac.utils.DpPxSpTransformUtil;
 import zhang.com.java.ac.utils.StringUtils;
 
 /**
@@ -66,10 +74,10 @@ public class ReplysListAdapter extends BaseAdapter {
 
         final ReplysInfo.OneReply oneReply = list.get(position);
 
-        if (oneReply.userid.equals(upName)) {
-            holder.tv_replys_name.setTextColor(Color.parseColor("#006000"));
-        }else if (oneReply.admin.equals("1")) {
+        if (oneReply.admin.equals("1")) {
             holder.tv_replys_name.setTextColor(Color.parseColor("#FF0000"));
+        }else if ( oneReply.userid.equals(upName)) {
+            holder.tv_replys_name.setTextColor(Color.parseColor("#006000"));
         }else {
             holder.tv_replys_name.setTextColor(Color.parseColor("#9D9D9D"));
         }
@@ -77,13 +85,16 @@ public class ReplysListAdapter extends BaseAdapter {
         holder.tv_replys_name.setText(oneReply.userid);
         holder.tv_replys_now.setText(StringUtils.handlerDate(oneReply.now));
         holder.tv_replys_id.setText("NO."+oneReply.id);
-        holder.tv_replys_content.setText(Html.fromHtml(oneReply.content));
+      //  holder.tv_replys_content.setText(Html.fromHtml(oneReply.content));
+        setSpan(holder.tv_replys_content,oneReply);
 
 
         if (!oneReply.img.equals("")) {
+            holder.iv_replys.setPadding(0, DpPxSpTransformUtil.dip2px(10f),0,DpPxSpTransformUtil.dip2px(10f));
             utils.configDefaultLoadingImage(R.drawable.image_loding);
             utils.display(holder.iv_replys, "http://cdn.ovear.info:8998/thumb/" + oneReply.img + oneReply.ext);
         } else {
+            holder.iv_replys.setPadding(0,0,0,0);
             holder.iv_replys.setImageResource(R.drawable.image_null);
         }
         holder.iv_replys.setOnClickListener(new View.OnClickListener() {
@@ -94,9 +105,59 @@ public class ReplysListAdapter extends BaseAdapter {
                 ReplyActivity.activity.startActivity(intent);
             }
         });
-
-
         return convertView;
+    }
+    private void setSpan(TextView tv,ReplysInfo.OneReply info) {
+        String handlerContent = StringUtils.handlerContent(info.content);
+        Pattern pattern = Pattern.compile(">>No.[0-9]+");
+        Matcher matcher = pattern.matcher(handlerContent);
+
+        if (matcher.find()) {
+            String contentId =handlerContent.substring(matcher.start()+5, matcher.end());
+            tv.setMovementMethod(LinkMovementMethod.getInstance());
+            tv.setHighlightColor(Color.WHITE);
+            SpannableString spannableString = new SpannableString(handlerContent);
+            spannableString.setSpan(new MySpan(info,contentId,list),matcher.start(),matcher.end(), Spannable.SPAN_EXCLUSIVE_INCLUSIVE);
+            tv.setText(spannableString);
+        }else {
+            tv.setText(Html.fromHtml(info.content));
+        }
+    }
+    class MySpan extends ClickableSpan {
+        private ArrayList<ReplysInfo.OneReply> list;
+        private ReplysInfo.OneReply info;
+        private String contentId;
+        private MySpan(ReplysInfo.OneReply info,String id,ArrayList<ReplysInfo.OneReply> list) {
+            this.info=info;
+            contentId=id;
+            this.list=list;
+        }
+
+        @Override
+        public void onClick(View widget) {
+            ArrayList<String> idList = new ArrayList<>();
+            for (int i=0;i<list.size();i++) {
+                String id = list.get(i).id;
+                idList.add(id);
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(ReplyActivity.activity);
+            if (idList.contains(contentId)) {
+                ReplysInfo.OneReply reply = list.get(idList.indexOf(contentId));
+                View view = View.inflate(ReplyActivity.activity, R.layout.item_replys, null);
+                TextView id = (TextView) view.findViewById(R.id.tv_replys_id);
+                TextView name = (TextView) view.findViewById(R.id.tv_replys_name);
+                TextView content = (TextView) view.findViewById(R.id.tv_replys_content);
+                TextView now = (TextView) view.findViewById(R.id.tv_replys_now);
+                id.setText(reply.id);
+                name.setText(reply.userid);
+                content.setText(Html.fromHtml(reply.content));
+                now.setText(StringUtils.handlerDate(reply.now));
+                builder.setView(view,0,0,0,0);
+                builder.show();
+            }else {
+                builder.setMessage("不是本串内容").show();
+            }
+        }
     }
 
     static  class ViewHolder {

@@ -9,6 +9,7 @@
         android:targetSdkVersion="23" />
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -32,7 +33,20 @@
         <activity
             android:name="zhang.com.java.ac.ImageActivity"
             android:label="@string/title_activity_image"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme2" />
+        <activity
+            android:name="zhang.com.java.ac.PostActivity"
+            android:label="@string/title_activity_post"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="zhang.com.java.ac.CollectActivity"
+            android:label="@string/title_activity_collcet"
+            android:theme="@style/AppTheme2" />
+        <activity
+            android:name="zhang.com.java.ac.RepLogActivity"
+            android:label="@string/title_activity_rep_log"
+            android:theme="@style/AppTheme2" />
     </application>
 
 </manifest>

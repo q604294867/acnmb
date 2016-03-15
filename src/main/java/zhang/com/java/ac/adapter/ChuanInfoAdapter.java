@@ -12,10 +12,12 @@ import com.lidroid.xutils.BitmapUtils;
 
 import java.util.ArrayList;
 
+import zhang.com.java.ac.ImageActivity;
 import zhang.com.java.ac.MainActivity;
 import zhang.com.java.ac.R;
 import zhang.com.java.ac.ReplyActivity;
-import zhang.com.java.ac.chuan.ChuanInfo;
+import zhang.com.java.ac.bean.ChuanInfo;
+import zhang.com.java.ac.utils.DpPxSpTransformUtil;
 import zhang.com.java.ac.utils.StringUtils;
 import zhang.com.java.ac.viewholder.ChuanInfoViewHolder;
 
@@ -53,19 +55,30 @@ public class ChuanInfoAdapter extends RecyclerView.Adapter<ChuanInfoViewHolder> 
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.mactivity, ReplyActivity.class);
-                intent.putExtra("id",info.id);
+                intent.putExtra("id", info.id);
                 MainActivity.mactivity.startActivity(intent);
             }
         });
+        holder.iv_chuan_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ImageActivity.class);
+                intent.putExtra("url", info.img + info.ext);
+                MainActivity.mactivity.startActivity(intent);
+            }
+        });
+        DpPxSpTransformUtil.init(MainActivity.mactivity.getResources().getDisplayMetrics().density);
         if (info.admin.equals("1")) {
             holder.tv_chuan_userid.setTextColor(Color.parseColor("#FF0000"));
         }else {
             holder.tv_chuan_userid.setTextColor(Color.parseColor("#9D9D9D"));
         }
         if (!info.img.equals("")) {
+            holder.iv_chuan_img.setPadding(0, DpPxSpTransformUtil.dip2px(10f),0,DpPxSpTransformUtil.dip2px(10f));
             utils.configDefaultLoadingImage(R.drawable.image_loding);
             utils.display(holder.iv_chuan_img, "http://cdn.ovear.info:8998/thumb/" + info.img + info.ext);
         }else {
+            holder.iv_chuan_img.setPadding(0,0,0,0);
             holder.iv_chuan_img.setImageResource(R.drawable.image_null);
         }
 

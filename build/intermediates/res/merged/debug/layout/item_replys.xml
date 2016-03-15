@@ -35,10 +35,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/tv_replys_content"
         android:textColor="#000000"
-        android:textSize="15dp" />
+        android:textSize="16dp"
+        android:autoLink="web"/>
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/iv_replys"/>
-
 </LinearLayout>

@@ -1,7 +1,15 @@
 [
     {
+        "merged": "D:\\java-FILE\\MyApplication2\\ac匿名版\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi-v4\\ic_reply_dark_x24.png",
+        "source": "D:\\java-FILE\\MyApplication2\\ac匿名版\\src\\main\\res\\mipmap-xhdpi\\ic_reply_dark_x24.png"
+    },
+    {
         "merged": "D:\\java-FILE\\MyApplication2\\ac匿名版\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi-v4\\image_failed.png",
         "source": "D:\\java-FILE\\MyApplication2\\ac匿名版\\src\\main\\res\\mipmap-xhdpi\\image_failed.png"
+    },
+    {
+        "merged": "D:\\java-FILE\\MyApplication2\\ac匿名版\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi-v4\\ic_arrow_left_dark_x24.png",
+        "source": "D:\\java-FILE\\MyApplication2\\ac匿名版\\src\\main\\res\\mipmap-xhdpi\\ic_arrow_left_dark_x24.png"
     },
     {
         "merged": "D:\\java-FILE\\MyApplication2\\ac匿名版\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi-v4\\ic_launcher.png",

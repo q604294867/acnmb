@@ -3,13 +3,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_collcet"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="收藏" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_rep_log"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="回复记录" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
@@ -29,6 +29,12 @@
             <item
                 android:id="@+id/nav_jishu"
                 android:title="技术版" />
+            <item
+                android:id="@+id/nav_riji"
+                android:title="日记" />
+            <item
+                android:id="@+id/nav_huanle"
+                android:title="欢乐恶搞"/>
         </menu>
     </item>
 

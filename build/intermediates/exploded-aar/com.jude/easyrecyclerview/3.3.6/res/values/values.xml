@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <declare-styleable name="superrecyclerview"><attr format="reference" name="layout_empty"/><attr format="reference" name="layout_progress"/><attr format="reference" name="layout_error"/><attr format="boolean" name="recyclerClipToPadding"/><attr format="dimension" name="recyclerPadding"/><attr format="dimension" name="recyclerPaddingTop"/><attr format="dimension" name="recyclerPaddingBottom"/><attr format="dimension" name="recyclerPaddingLeft"/><attr format="dimension" name="recyclerPaddingRight"/><attr name="scrollbarStyle"><enum name="insideOverlay" value="0x0"/><enum name="insideInset" value="0x01000000"/><enum name="outsideOverlay" value="0x02000000"/><enum name="outsideInset" value="0x03000000"/></attr></declare-styleable>
-    <!-- From: file:/Users/zhuchenxi/Work/android/workplace/EasyRecyclerView/easyrecyclerview/src/main/res/values/strings.xml -->
-    <eat-comment/>
-    <string name="app_name">EasyRecyclerView</string>
-</resources>

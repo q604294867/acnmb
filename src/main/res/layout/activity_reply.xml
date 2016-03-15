@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ReplyActivity">
+    android:fitsSystemWindows="true"
+    tools:context="zhang.com.java.ac.ReplyActivity">
 
-
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/pb_reply"
-        android:layout_centerInParent="true"/>
-    <com.biao.pulltorefresh.PtrLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/reply_ptrRefresh">
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/test_lv"
-                ></ListView>
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-    </com.biao.pulltorefresh.PtrLayout>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/reply_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        android:navigationIcon="@drawable/ic_arrow_left_dark_x24"/>
+    </android.support.design.widget.AppBarLayout>
 
-</RelativeLayout>
+
+
+      <include layout="@layout/content_reply"/>
+
+</android.support.design.widget.CoordinatorLayout>

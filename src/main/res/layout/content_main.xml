@@ -30,4 +30,12 @@
             </com.biao.pulltorefresh.PtrLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
+
+
+    <Button
+        android:id="@+id/bt_chuan_reload"
+        style="@style/buttonReLoad"
+        android:onClick="clickLoad"/>
+
 </RelativeLayout>
